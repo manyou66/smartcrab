@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "565980036544",
+    "firebase_url": "https://smartreleasecrab.firebaseio.com",
+    "project_id": "smartreleasecrab",
+    "storage_bucket": "smartreleasecrab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565980036544:android:374951fa4c11527e395c25",
+        "android_client_info": {
+          "package_name": "com.wanpracha.smartcrab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565980036544-7fkhl296f2reh6qajiqoa8k5sglu3ffg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByn0i8IF7bjwEcW0V9uS3TGFaooANCtRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565980036544-7fkhl296f2reh6qajiqoa8k5sglu3ffg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
