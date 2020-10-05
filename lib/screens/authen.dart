@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smartcrab/screens/my_service.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -10,7 +12,9 @@ class _AuthenState extends State<Authen> {
   double amount = 150.0;
   double size = 250.0;
   String emailString, passwordString;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final formkey = GlobalKey<FormState>(); //Store email and password data
+  final scaffoldKey = GlobalKey<ScaffoldState>(); //store all screen
 
   bool checkSpace(String value) {
     // check space input from email and password
@@ -20,6 +24,11 @@ class _AuthenState extends State<Authen> {
       result = true;
     }
     return result;
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   Widget showLogo() {
@@ -110,6 +119,26 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  void moveToMyService(BuildContext context) {
+    var myServiceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => MyService());
+    Navigator.of(context)
+        .pushAndRemoveUntil(myServiceRoute, (Route<dynamic> route) => false);
+  }
+
+  void checkAuthen(BuildContext context) async {
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((objValue) {
+          moveToMyService(context);
+      // print('data OK');
+    }).catchError((objValue) {
+      String error = objValue.message;
+      print('error => $error');
+    });
+  }
+
   Widget signInButton(BuildContext context) {
     return Expanded(
       child: FlatButton(
@@ -117,9 +146,10 @@ class _AuthenState extends State<Authen> {
           borderRadius: BorderRadius.circular(30.0),
         ),
         onPressed: () {
-          print('you click login');
-          formkey.currentState.save();
-          print('email=$emailString,password = $passwordString');
+          if (formkey.currentState.validate()) {
+            formkey.currentState.save();
+            checkAuthen(context);
+          }
         },
         color: Colors.orange[500],
         child: Text(
@@ -133,6 +163,7 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
       body: Container(
         alignment: Alignment(0, -1),
