@@ -6,13 +6,24 @@ class MyService extends StatefulWidget {
 }
 
 class _MyServiceState extends State<MyService> {
-  
   Widget button() {
-    return RaisedButton(
-        color: Colors.blue[700],
-        textColor: Colors.white,
-        child: Text('Fan'),
-        onPressed: () {});
+    return Expanded(
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 50.0),
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          onPressed: () {},
+          color: Colors.orange[500],
+          child: Text(
+            'Release Crab',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
