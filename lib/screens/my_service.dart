@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_web/flutter_native_web.dart';
 
 class MyService extends StatefulWidget {
   @override
@@ -6,6 +11,56 @@ class MyService extends StatefulWidget {
 }
 
 class _MyServiceState extends State<MyService> {
+  FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
+  Map<dynamic, dynamic> iotmap;
+  int crabInt;
+  String crabString = 'Stop Crab';
+  String temp_inside =
+      'https://thingspeak.com/channels/662286/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line';
+  WebController webController;
+  String nameLogin = "", uidString;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  
+  void onWebCreatedTempInside(webController) {
+    this.webController = webController;
+    this.webController.loadUrl(temp_inside);
+    this.webController.onPageStarted.listen((url) => print("Loading $url"));
+    this
+        .webController
+        .onPageFinished
+        .listen((url) => print("Finished loading $url"));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getValueFromFirebase();
+  }
+
+  void getValueFromFirebase() async {
+    DatabaseReference databaseReference =
+        await firebaseDatabase.reference().once().then((objValue) {
+      iotmap = objValue.value;
+      setState(() {
+        crabInt = iotmap['Crab'];
+        print('Crab = $crabInt');
+      });
+    });
+  }
+
+  void editFirebase(String nodeString, int value) async {
+    print('node ==> $nodeString');
+    iotmap['$nodeString'] = value;
+    await firebaseDatabase.reference().set(iotmap).then((objValue) {
+      print('$nodeString Success');
+      getValueFromFirebase();
+    }).catchError((objValue) {
+      String error = objValue.message;
+      print('error ==> $error');
+    });
+  }
+
   Widget button() {
     return Expanded(
       child: Container(
@@ -15,10 +70,18 @@ class _MyServiceState extends State<MyService> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          onPressed: () {},
+          onPressed: () {
+            if (crabInt == 1) {
+              crabString = 'Stop Crab';
+              editFirebase('Crab', 0);
+            } else {
+              crabString = 'Open Crab';
+              editFirebase('Crab', 1);
+            }
+          },
           color: Colors.orange[500],
           child: Text(
-            'Release Crab',
+            crabString,
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -28,22 +91,30 @@ class _MyServiceState extends State<MyService> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-                center: Alignment(0, -1),
-                colors: [
-                  Colors.white,
-                  Colors.green[300],
-                ],
-                radius: 1.5),
-          ),
-          child: ListView(
-            children: [button()],
-          ),
+    FlutterNativeWeb flutterWebViewTempInside = new FlutterNativeWeb(
+      onWebCreated: onWebCreatedTempInside,
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+        Factory<OneSequenceGestureRecognizer>(
+          () => TapGestureRecognizer(),
         ),
+      ].toSet(),
+    );
+
+    return Scaffold(
+      body: ListView(
+        children: <Widget>[
+          button(),
+          Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 30.0, right: 10.0),
+                child: flutterWebViewTempInside,
+                height: 300.0,
+                width: 500.0,
+              )
+            ],
+          )
+        ],
       ),
     );
   }
