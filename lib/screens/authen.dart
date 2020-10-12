@@ -29,6 +29,7 @@ class _AuthenState extends State<Authen> {
   @override
   void initState() {
     super.initState();
+    checkStatus();
   }
 
   Widget showLogo() {
@@ -119,6 +120,14 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  Future<void> checkStatus() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser;
+    if (firebaseUser != null) {
+      moveToMyService(context);
+    }
+  }
+
   void moveToMyService(BuildContext context) {
     var myServiceRoute =
         MaterialPageRoute(builder: (BuildContext context) => MyService());
@@ -131,7 +140,7 @@ class _AuthenState extends State<Authen> {
         .signInWithEmailAndPassword(
             email: emailString, password: passwordString)
         .then((objValue) {
-          moveToMyService(context);
+      moveToMyService(context);
       // print('data OK');
     }).catchError((objValue) {
       String error = objValue.message;
