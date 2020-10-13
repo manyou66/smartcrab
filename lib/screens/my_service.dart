@@ -140,17 +140,17 @@ class _MyServiceState extends State<MyService> {
       ),
       body: ListView(
         children: <Widget>[
-          button(),
-          Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 30.0, right: 10.0),
-                child: flutterWebViewTempInside,
-                height: 300.0,
-                width: 500.0,
-              )
-            ],
-          )
+          // button(),
+          // Column(
+          //   children: <Widget>[
+          //     Container(
+          //       padding: EdgeInsets.only(top: 30.0, right: 10.0),
+          //       child: flutterWebViewTempInside,
+          //       height: 300.0,
+          //       width: 500.0,
+          //     ),
+          //   ],
+          // )
         ],
       ),
     );
