@@ -17,8 +17,7 @@ class _MyServiceState extends State<MyService> {
   Map<dynamic, dynamic> iotmap;
   int crabInt;
   String crabString = 'Stop Crab';
-  String temp_inside =
-      'https://thingspeak.com/channels/662286/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line';
+  String temp_inside = 'https://thingspeak.com/channels/662286/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line';
   WebController webController;
   String nameLogin = "", uidString;
   FirebaseAuth firebaseAuthMyService = FirebaseAuth.instance;
@@ -133,24 +132,24 @@ class _MyServiceState extends State<MyService> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Release Crab'),
+        title: Text('Smart Release Crab'),
         actions: [
           signOutButton(),
         ],
       ),
       body: ListView(
-        children: <Widget>[
-          button(),
+        children: [
           Column(
-            children: <Widget>[
+            children: [
               Container(
-                padding: EdgeInsets.only(top: 30.0, right: 10.0),
+                padding: EdgeInsets.only(top: 30.0, right: 10.0, left: 10.0),
                 child: flutterWebViewTempInside,
                 height: 300.0,
                 width: 500.0,
               )
             ],
-          )
+          ),
+          button(),
         ],
       ),
     );

@@ -29,8 +29,17 @@ class _AuthenState extends State<Authen> {
   @override
   void initState() {
     super.initState();
-    checkStatus();
+    checkStatus(context);
   }
+    void checkStatus(BuildContext context) async {
+    final User user = await firebaseAuth.currentUser;
+    //final uid = user.uid;//Stay login firebase have value
+    if (user != null) {
+      //  Move to MyService
+      moveToMyService(context);
+    }
+  }
+
 
   Widget showLogo() {
     return Container(
@@ -76,13 +85,17 @@ class _AuthenState extends State<Authen> {
               color: Colors.orange[600],
             ),
             hintText: 'abcd@email.com'),
-        validator: (String value) {
-          if (checkSpace(value)) {
+        validator: (String emailvalue) {
+          if (checkSpace(emailvalue)) {
             return 'Please Type in Email';
           }
+          if (!(emailvalue.contains('@')) && (emailvalue.contains('.'))) {
+          return 'Wrong Email Format you@abcd.com';
+        }
+
         },
         onSaved: (String value) {
-          emailString = value;
+          emailString = value.trim();
         },
       ),
     );
@@ -108,24 +121,20 @@ class _AuthenState extends State<Authen> {
               color: Colors.orange[600],
             ),
             hintText: 'More 6 Charactor'),
-        validator: (String value) {
-          if (checkSpace(value)) {
+        validator: (String pwdvalue) {
+          if (checkSpace(pwdvalue)) {
             return 'Password Empty';
           }
+          if (pwdvalue.length < 6) {
+          return 'More than 6 ';
+        }
+
         },
         onSaved: (String value) {
-          passwordString = value;
+          passwordString = value.trim();
         },
       ),
     );
-  }
-
-  Future<void> checkStatus() async {
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    FirebaseUser firebaseUser = await firebaseAuth.currentUser;
-    if (firebaseUser != null) {
-      moveToMyService(context);
-    }
   }
 
   void moveToMyService(BuildContext context) {
