@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:smartcrab/screens/authen.dart';
+import 'package:smartcrab/screens/letcrabdetail.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Authen(),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, //remove debug banner
     );
   }
 }
