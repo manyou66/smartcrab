@@ -41,14 +41,14 @@ class _LetcrabdetailState extends State<Letcrabdetail> {
         setState(() {
           crabModels.add(crabModel);
         });
-        String str = crabModels[0].enterdate.toDate().year.toString();
+        String str = crabModels[0].enterdate;
         print('weight ===> $str');
       }
     });
   }
 
   Widget showDate(int index) {
-    return Text(crabModels[index].enterdate.toDate().year.toString());
+    return Text(crabModels[index].enterdate);
   }
 
   Widget showWeight(int index) {

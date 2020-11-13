@@ -28,6 +28,7 @@ class _MyServiceState extends State<MyService> {
   String weight;
   final formkey = GlobalKey<FormState>(); //Store email and password data
   final scaffoldKey = GlobalKey<ScaffoldState>(); //store all screen
+  String showdate = "เลือกวันที่";
 
   void onWebCreatedTempInside(webController) {
     this.webController = webController;
@@ -45,15 +46,15 @@ class _MyServiceState extends State<MyService> {
     getValueFromFirebase();
   }
 
-
   Future<void> additemFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     Map<String, dynamic> map = Map();
-    map['datetime'] = _dateTime;
+    map['datetime'] = showdate;
     map['weight'] = weight;
     await firebaseFirestore.collection('letcrab').add(map).then((value) {
       print('Insert Success');
-      normalDialog(context, 'แจ้งเตือน', 'ส่งค่าได้เรียบร้อย');
+      normalDialog(
+          context, 'แจ้งเตือน', 'ส่งค่าวันที่ $showdate น้ำหนักปู $weight กก.เรียบร้อยครับ');
     }).catchError((var response) {
       print('response = $response');
       String title = response.code;
@@ -69,7 +70,7 @@ class _MyServiceState extends State<MyService> {
       iotmap = objValue.value;
       setState(() {
         crabInt = iotmap['Crab'];
-        
+
         print('Crab = $crabInt');
       });
     });
@@ -140,16 +141,22 @@ class _MyServiceState extends State<MyService> {
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 20.0),
         child: RaisedButton(
-          child: Text('เลือกวันที่'),
+          child: Text(showdate),
           onPressed: () {
             showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2050),)
-                .then((date) {
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2020),
+              lastDate: DateTime(2050),
+            ).then((date) {
               setState(() {
                 _dateTime = date;
+                showdate = _dateTime.day.toString() +
+                    "/" +
+                    _dateTime.month.toString() +
+                    "/" +
+                    _dateTime.year.toString();
+                print('date ===> $showdate');
               });
             });
           },
@@ -175,7 +182,6 @@ class _MyServiceState extends State<MyService> {
             } else {
               crabString = 'ปล่อยปู';
               editFirebase('Crab', 1);
-              
             }
           },
           color: Colors.orange[500],

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CrabModel {
   //Field
   int weight;
-  Timestamp enterdate;
+  String enterdate;
 
   //Method
   CrabModel(this.enterdate, this.weight);
