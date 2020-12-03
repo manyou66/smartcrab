@@ -29,6 +29,7 @@ class _MyServiceState extends State<MyService> {
   final formkey = GlobalKey<FormState>(); //Store email and password data
   final scaffoldKey = GlobalKey<ScaffoldState>(); //store all screen
   String showdate = "เลือกวันที่";
+  String login = '...';
 
   void onWebCreatedTempInside(webController) {
     this.webController = webController;
@@ -46,6 +47,57 @@ class _MyServiceState extends State<MyService> {
     getValueFromFirebase();
   }
 
+  Future<void> findDisplayName() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    
+  }
+
+  Widget showAppName() {
+    return Text(
+      'แอพพลิเคชันปล่อยปู',
+      style: TextStyle(
+        color: Colors.blue[700],
+        fontWeight: FontWeight.bold,
+        fontSize: 22.0,
+      ),
+    );
+  }
+
+  Widget showLogin() {
+    return Text('Login by $login');
+  }
+
+  Widget showLogo() {
+    return Container(
+      width: 80.0,
+      height: 80.0,
+      child: Image.asset('images/logo.png'),
+    );
+  }
+
+  Widget showHead() {
+    return DrawerHeader(
+      child: Column(
+        children: [
+          showLogo(),
+          showAppName(),
+          SizedBox(
+            height: 7.0,
+          ),
+          showLogin(),
+        ],
+      ),
+    );
+  }
+
+  Widget showDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [showHead()],
+      ),
+    );
+  }
+
   Future<void> additemFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     Map<String, dynamic> map = Map();
@@ -53,8 +105,8 @@ class _MyServiceState extends State<MyService> {
     map['weight'] = weight;
     await firebaseFirestore.collection('letcrab').add(map).then((value) {
       print('Insert Success');
-      normalDialog(
-          context, 'แจ้งเตือน', 'ส่งค่าวันที่ $showdate น้ำหนักปู $weight กก.เรียบร้อยครับ');
+      normalDialog(context, 'แจ้งเตือน',
+          'ส่งค่าวันที่ $showdate น้ำหนักปู $weight กก.เรียบร้อยครับ');
     }).catchError((var response) {
       print('response = $response');
       String title = response.code;
@@ -236,6 +288,7 @@ class _MyServiceState extends State<MyService> {
     );
 
     return Scaffold(
+      drawer: showDrawer(),
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('แอพพลิเคชันปล่อยปูอัจฉริยะ'),
@@ -251,8 +304,7 @@ class _MyServiceState extends State<MyService> {
               Column(
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.only(top: 30.0, right: 10.0, left: 10.0),
+                    padding: EdgeInsets.only(top: 20.0, right: 10.0, left: 5.0),
                     child: flutterWebViewTempInside,
                     height: 300.0,
                     width: 500.0,
@@ -272,7 +324,7 @@ class _MyServiceState extends State<MyService> {
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(top: 30.0, right: 10.0, left: 10.0),
+                padding: EdgeInsets.only(top: 20.0, right: 10.0, left: 5.0),
                 child: flutterWebViewTempInside,
                 height: 300.0,
                 width: 500.0,

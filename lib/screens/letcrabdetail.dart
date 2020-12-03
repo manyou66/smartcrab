@@ -10,7 +10,7 @@ class Letcrabdetail extends StatefulWidget {
 class _LetcrabdetailState extends State<Letcrabdetail> {
   //Field
   List<CrabModel> crabModels = List();
-
+  String date, weight;
   void initState() {
     super.initState();
     readAllData();
@@ -24,8 +24,10 @@ class _LetcrabdetailState extends State<Letcrabdetail> {
       List<QueryDocumentSnapshot> snapshots = response.docs;
       for (var snapshot in snapshots) {
         print('snapshot = $snapshot');
-        print('weight = ${snapshot.data()["weight"]}');
-        print('date = ${snapshot.data()["datetime"]}');
+        weight = snapshot.data()["weight"];
+        date = snapshot.data()["datetime"];
+        print('weight = $weight');
+        print('date = $date');
         //Timestamp t =  snapshot.data()["datetime"];
         // DateTime d = t.toDate();
         // String dd, m, y;
@@ -48,21 +50,23 @@ class _LetcrabdetailState extends State<Letcrabdetail> {
   }
 
   Widget showDate(int index) {
+    // return Text(crabModels[index].enterdate);
     return Text(crabModels[index].enterdate);
   }
 
-  Widget showWeight(int index) {
-    return Text(crabModels[index].weight.toString());
+  Widget showWeight() {
+    // return Text(crabModels[index].weight.toString());
+    return Text('$weight');
   }
 
   Widget showText(index) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.width * 0.5,
+      //width: MediaQuery.of(context).size.width * 0.5,
+      //height: MediaQuery.of(context).size.width * 0.5,
       child: Row(
-        children: [
+        children: <Widget>[
           showDate(index),
-          showWeight(index),
+          // showWeight(index),
         ],
       ),
     );
@@ -70,7 +74,7 @@ class _LetcrabdetailState extends State<Letcrabdetail> {
 
   Widget showListView(int index) {
     return Column(
-      children: [showText(index)],
+      children: <Widget>[showText(index)],
     );
   }
 
