@@ -8,9 +8,10 @@ class Showdetail extends StatefulWidget {
 }
 
 class _ShowdetailState extends State<Showdetail> {
- //Field
+  //Field
   List<CrabModel> crabModels = List();
   String date, weight;
+
   void initState() {
     super.initState();
     readAllData();
@@ -43,44 +44,72 @@ class _ShowdetailState extends State<Showdetail> {
         setState(() {
           crabModels.add(crabModel);
         });
-        String str = crabModels[0].enterdate;
-        print('weight ===> $str');
+        //String str = crabModels[0].enterdate;
+        // print('weight ===> $str');
+        date = crabModels[0].enterdate;
+        print('date2 = $date');
       }
     });
   }
 
   Widget showDate(int index) {
-     return Text(crabModels[index].enterdate);
-    //return Text(crabModels[index].enterdate);
+    return Text(
+      crabModels[index].enterdate,
+      style: TextStyle(
+        fontSize: 18.0,
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Widget showWeight(int index) {
-     return Text(crabModels[index].weight.toString());
-   // return Text('$weight');
+    return Text(
+      crabModels[index].weight,
+      style: TextStyle(
+        fontSize: 18.0,
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Widget showText(index) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.width * 0.5,
+      // width: MediaQuery.of(context).size.width * 0.5,
+      // height: MediaQuery.of(context).size.width * 0.5,
       child: Row(
         children: <Widget>[
           showDate(index),
-           showWeight(index),
+          SizedBox(
+            width: 40.0,
+            height: 25.0,
+          ),
+          showWeight(index),
         ],
       ),
     );
   }
 
+  Widget showReport() {
+    return Container();
+  }
+
   Widget showListView(int index) {
     return Column(
-      children: <Widget>[showText(index)],
+      children: [
+        Column(
+          children: <Widget>[showText(index)],
+        ),
+      ],
     );
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(left: 70.0, top: 50.0),
       child: ListView.builder(
         itemCount: crabModels.length,
         itemBuilder: (BuildContext buildContext, int index) {
