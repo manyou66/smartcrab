@@ -10,7 +10,7 @@ class Showtemp extends StatefulWidget {
 
 class _ShowtempState extends State<Showtemp> {
   String temp_inside =
-      'https://thingspeak.com/channels/662286/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line';
+      'https://thingspeak.com/channels/1223309/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15';
   WebController webController;
 
   void onWebCreatedTempInside(webController) {

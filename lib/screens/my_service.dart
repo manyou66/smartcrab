@@ -18,16 +18,15 @@ class _MyServiceState extends State<MyService> {
   FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
   Map<dynamic, dynamic> iotmap;
   int crabInt;
-  String crabString = 'หยุดปล่อยปู';
+  String crabString = 'หยุดปล่อยปูม้า';
   String nameLogin = "", uidString;
   FirebaseAuth firebaseAuthMyService = FirebaseAuth.instance;
-  DateTime _dateTime;
   String weight;
   final formkey = GlobalKey<FormState>(); //Store email and password data
   final scaffoldKey = GlobalKey<ScaffoldState>(); //store all screen
   String showdate = "เลือกวันที่";
   String login = '...';
-  Widget currentWidget = Showdetail();
+  Widget currentWidget = Showrelease();
 
   @override
   void initState() {
@@ -67,7 +66,7 @@ class _MyServiceState extends State<MyService> {
         color: Colors.yellow[400],
       ),
       title: Text(
-        'รายละเอียดการปล่อย',
+        'รายละเอียดการปล่อยปูม้า',
         style: TextStyle(
           color: Colors.blue,
           fontSize: 18.0,
@@ -91,7 +90,7 @@ class _MyServiceState extends State<MyService> {
         color: Colors.pink[300],
       ),
       title: Text(
-        'ปล่อยปู',
+        'ปล่อยปูม้า',
         style: TextStyle(
           color: Colors.blue,
           fontSize: 18.0,
@@ -113,7 +112,7 @@ class _MyServiceState extends State<MyService> {
 
   Widget showAppName() {
     return Text(
-      'แอพพลิเคชันปล่อยปู',
+      'แอพพลิเคชันปล่อยปูม้า',
       style: TextStyle(
         color: Colors.blue[700],
         fontWeight: FontWeight.bold,
@@ -143,7 +142,7 @@ class _MyServiceState extends State<MyService> {
           SizedBox(
             height: 7.0,
           ),
-          showLogin(),
+         // showLogin(),
         ],
       ),
     );
@@ -170,7 +169,7 @@ class _MyServiceState extends State<MyService> {
     await firebaseFirestore.collection('letcrab').add(map).then((value) {
       print('Insert Success');
       normalDialog(context, 'แจ้งเตือน',
-          'ส่งค่าวันที่ $showdate น้ำหนักปู $weight กก.เรียบร้อยครับ');
+          'ส่งค่าวันที่ $showdate จำนวนปูม้า $weight ตัวเรียบร้อยครับ');
     }).catchError((var response) {
       print('response = $response');
       String title = response.code;
@@ -241,7 +240,7 @@ class _MyServiceState extends State<MyService> {
       drawer: showDrawer(),
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('แอพพลิเคชันปล่อยปูอัจฉริยะ'),
+        title: Text('แอปปล่อยปูม้าอัจฉริยะ'),
         actions: [
           signOutButton(),
         ],

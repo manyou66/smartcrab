@@ -16,9 +16,9 @@ class _ShowreleaseState extends State<Showrelease> {
   FirebaseDatabase firebaseDatabase = FirebaseDatabase.instance;
   Map<dynamic, dynamic> iotmap;
   int crabInt;
-  String crabString = 'หยุดปล่อยปู';
+  String crabString = '';
   String temp_inside =
-      'https://thingspeak.com/channels/662286/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line';
+      'https://thingspeak.com/channels/1223309/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15';
   WebController webController;
   String nameLogin = "", uidString;
   FirebaseAuth firebaseAuthMyService = FirebaseAuth.instance;
@@ -52,7 +52,7 @@ class _ShowreleaseState extends State<Showrelease> {
     await firebaseFirestore.collection('letcrab').add(map).then((value) {
       print('Insert Success');
       normalDialog(context, 'แจ้งเตือน',
-          'ส่งค่าวันที่ $showdate น้ำหนักปู $weight กก.เรียบร้อยครับ');
+          'ส่งค่าวันที่ $showdate จำนวนปูม้า $weight ตัว เรียบร้อยครับ');
     }).catchError((var response) {
       print('response = $response');
       String title = response.code;
@@ -68,7 +68,11 @@ class _ShowreleaseState extends State<Showrelease> {
       iotmap = objValue.value;
       setState(() {
         crabInt = iotmap['Crab'];
-
+        if(crabInt==1){
+          crabString = 'หยุดปล่อยปูม้า';
+        }else{
+          crabString = 'ปล่อยปูม้า';
+        }
         print('Crab = $crabInt');
       });
     });
@@ -99,18 +103,19 @@ class _ShowreleaseState extends State<Showrelease> {
               color: Colors.blue[700],
               size: 20.0,
             ),
-            labelText: 'น้ำหนักปู',
+            labelText: 'จำนวน',
             labelStyle: TextStyle(color: Colors.blue[700]),
-            helperText: 'น้ำหนักเป็น กิโลกรัม',
+            helperText: 'จำนวนเป็นตัว',
             helperStyle: TextStyle(color: Colors.blue[300]),
           ),
           validator: (String value) {
             if (value.length == 0) {
-              return 'กรุณาใส่น้ำหนักปูครับ';
+              return 'กรุณาใส่จำนวนปูม้าครับ';
             }
           },
           onSaved: (String value) {
             weight = value.trim();
+            weight = weight + "  ตัว";
           },
         ),
       ),
@@ -166,29 +171,37 @@ class _ShowreleaseState extends State<Showrelease> {
   Widget button() {
     return Expanded(
       child: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.only(top: 20.0),
-        child: FlatButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          onPressed: () {
-            if (crabInt == 1) {
-              crabString = 'หยุดปล่อยปู';
-              editFirebase('Crab', 0);
-              normalDialog(context, 'แจ้งเตือน', 'ขอบคุณที่ปล่อยปูครับ');
-            } else {
-              crabString = 'ปล่อยปู';
-              editFirebase('Crab', 1);
-            }
-          },
-          color: Colors.orange[500],
-          child: Text(
-            crabString,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
+          height: 100.0,
+          width: 100.0,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 20.0),
+          child: ButtonTheme(
+            minWidth: 50.0,
+            height: 50.0,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              onPressed: () {
+                if (crabInt == 1) {
+                  crabString = 'ปล่อยปูม้า';
+                  editFirebase('Crab', 0);
+                } else {
+                  crabString = 'หยุดปล่อยปูม้า';
+                  editFirebase('Crab', 1);
+                  normalDialog(context, 'แจ้งเตือน', 'ขอบคุณที่ปล่อยปูม้าครับ');
+                }
+              },
+              color: Colors.orange[500],
+              child: Text(
+                crabString,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0),
+              ),
+            ),
+          )),
     );
   }
 
