@@ -48,8 +48,8 @@ def keystoreProperties = new Properties()
         applicationId "com.wanpracha.smartcrab"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName '1.0.1'
+        versionCode 8
+        versionName '8.0.1'
         multiDexEnabled true
     }
 

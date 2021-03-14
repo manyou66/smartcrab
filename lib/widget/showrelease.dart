@@ -68,9 +68,9 @@ class _ShowreleaseState extends State<Showrelease> {
       iotmap = objValue.value;
       setState(() {
         crabInt = iotmap['Crab'];
-        if(crabInt==1){
+        if (crabInt == 1) {
           crabString = 'หยุดปล่อยปูม้า';
-        }else{
+        } else {
           crabString = 'ปล่อยปูม้า';
         }
         print('Crab = $crabInt');
@@ -171,37 +171,38 @@ class _ShowreleaseState extends State<Showrelease> {
   Widget button() {
     return Expanded(
       child: Container(
-          height: 100.0,
-          width: 100.0,
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 20.0),
-          child: ButtonTheme(
-            minWidth: 50.0,
-            height: 50.0,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              onPressed: () {
-                if (crabInt == 1) {
-                  crabString = 'ปล่อยปูม้า';
-                  editFirebase('Crab', 0);
-                } else {
-                  crabString = 'หยุดปล่อยปูม้า';
-                  editFirebase('Crab', 1);
-                  normalDialog(context, 'แจ้งเตือน', 'ขอบคุณที่ปล่อยปูม้าครับ');
-                }
-              },
-              color: Colors.orange[500],
-              child: Text(
-                crabString,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0),
-              ),
+        height: 100.0,
+        width: 150.0,
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 10.0),
+        child: ButtonTheme(
+          minWidth: 100.0,
+          height: 50.0,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
-          )),
+            onPressed: () {
+              if (crabInt == 1) {
+                crabString = 'ปล่อยปูม้า';
+                editFirebase('Crab', 0);
+              } else {
+                crabString = 'หยุดปล่อยปูม้า';
+                editFirebase('Crab', 1);
+                normalDialog(context, 'แจ้งเตือน', 'ขอบคุณที่ปล่อยปูม้าครับ');
+              }
+            },
+            color: Colors.orange[500],
+            child: Text(
+              crabString,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -218,17 +219,22 @@ class _ShowreleaseState extends State<Showrelease> {
     return Container(
       child: Form(
         key: formkey,
-        child: ListView(
+        child: Column(
           children: [
-            Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 20.0, right: 10.0, left: 5.0),
-                  child: flutterWebViewTempInside,
-                  height: 300.0,
-                  width: 500.0,
-                )
-              ],
+            Text(
+              'ควบคุมการปล่อยปู',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20.0, right: 10.0, left: 5.0),
+              child: flutterWebViewTempInside,
+              height: 300.0,
+              width: 500.0,
             ),
             button(),
             Row(
